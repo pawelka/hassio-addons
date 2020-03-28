@@ -28,30 +28,39 @@ class DNSQuery:
             packet += str.join('', map(lambda x: chr(int(x)), ip.split('.')))  # 4bytes of IP
         return packet
 
+
 class FakeDNS(object):
 
-    def __init__(self):
+    def __init__(self, log):
+        self.log = log
         self.ip = '192.168.2.22'
-        print '[+] FakeDNS entry:: dom.query. 60 IN A %s' % self.ip
+        self.log.info('[FakeDNS] Entry:: dom.query. 60 IN A %s' % self.ip)
         self.udps = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.last_domain = None
+        self.started = False
 
     def start(self):
+        self.started = True
+        self.udps.settimeout(1)
         self.udps.bind(('', 53))
         thread = threading.Thread(target=self.loop)
         thread.start()
 
     def close(self):
-        print '[+] Finalize'
+        self.log.info('[FakeDNS] Finalize')
         self.udps.close()
+        self.started = False
 
     def loop(self):
-        while 1:
-            data, addr = self.udps.recvfrom(1024)
-            p = DNSQuery(data)
-            self.udps.sendto(p.response(self.ip), addr)
-            self.last_domain = p.domain
-            print '[+] FakeDNS response: %s -> %s' % (p.domain, self.ip)
+        while self.started:
+            try:
+                data, addr = self.udps.recvfrom(1024)
+                p = DNSQuery(data)
+                self.udps.sendto(p.response(self.ip), addr)
+                self.last_domain = p.domain
+                self.info('[FakeDNS] Response: %s -> %s' % (p.domain, self.ip))
+            except socket.timeout:
+                pass
 
 
 if __name__ == '__main__':
