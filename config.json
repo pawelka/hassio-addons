@@ -6,8 +6,50 @@
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "before",
   "boot": "auto",
-  "options": {},
-  "schema": {},
+  "options": {
+    "proxy": {
+      "bind_ip": "0.0.0.0",
+      "bind_port": 10000,
+      "max_connection": 1
+    },
+    "fakedns": {
+      "initial_domain": "data1.solarmanpv.com"
+    },
+    "log": {
+      "log_level": "DEBUG"
+    },
+    "mqtt": {
+      "mqtt_host": "127.0.0.1",
+      "mqtt_port": 1883,
+      "mqtt_topic": "SofarSolar",
+      "mqtt_username": "",
+      "mqtt_password": "",
+      "mqtt_qos": 0,
+      "mqtt_retain": false
+    }
+  },
+  "schema": {
+    "proxy": {
+      "bind_ip": "str",
+      "bind_port": "int",
+      "max_connection": "int"
+    },
+    "fakedns": {
+      "initial_domain": "str"
+    },
+    "log": {
+      "log_level": "str"
+    },
+    "mqtt": {
+      "mqtt_host": "str",
+      "mqtt_port": "int",
+      "mqtt_topic": "str",
+      "mqtt_username": "str",
+      "mqtt_password": "password",
+      "mqtt_qos": "int",
+      "mqtt_retain": "bool"
+    }
+  },
   "ports": {
     "10000/tcp": 10000,
     "53/udp": 53
