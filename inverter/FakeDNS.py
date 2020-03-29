@@ -31,12 +31,12 @@ class DNSQuery:
 
 class FakeDNS(object):
 
-    def __init__(self, log):
+    def __init__(self, log, inital_domain=None):
         self.log = log
         self.ip = '192.168.2.22'
         self.log.info('[FakeDNS] Entry:: dom.query. 60 IN A %s' % self.ip)
         self.udps = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.last_domain = None
+        self.last_domain = inital_domain
         self.started = False
 
     def start(self):

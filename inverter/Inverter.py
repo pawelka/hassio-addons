@@ -26,7 +26,7 @@ def main():
     mydir = os.path.dirname(os.path.abspath(__file__))
     config = ConfigParser.RawConfigParser()
     # Load the setting file
-    config.read([mydir + '/config-org.cfg', mydir + '/config.cfg'])
+    config.read([mydir + '/config-org.cfg', mydir + '/config/config.cfg'])
 
     logger = logging.getLogger("Inverter")
     file_handler = logging.FileHandler(config.get('log', 'log_filename'))
@@ -38,7 +38,9 @@ def main():
     logger.addHandler(console_handler)
     logger.setLevel(logging.getLevelName(config.get('log', 'log_level')))
 
-    fake_dns = FakeDNS.FakeDNS(logger)
+    logger.debug({section: dict(config.items(section)) for section in config.sections()})
+
+    fake_dns = FakeDNS.FakeDNS(logger, config.get('fakedns', 'initial_domain'))
     mqtt_client = MqttClient.MqttClient(logger, config)
     tcp_proxy = TcpProxy.TcpProxy(config, logger, fake_dns, create_callback(logger, mqtt_client))
     try:

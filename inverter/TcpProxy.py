@@ -74,18 +74,15 @@ class TcpProxy(object):
             self.callback(buffer, src_address, src_port, dst_address, dst_port, direction)
             dst.send(buffer)
         self.log.info("[TcpProxy] Closing connections! [%s:%d]" % (src_address, src_port))
-        src.shutdown(socket.SHUT_RDWR)
         src.close()
 
     def close(self):
         self.started = False
         self.log.info("[TcpProxy] Releasing resources...")
         if self.remote_socket is not None:
-            self.remote_socket.shutdown()
             self.remote_socket.close()
         if self.local_socket is not None:
-            self.local_socket.shutdown()
             self.local_socket.close()
         self.log.info("[TcpProxy] Closing server...")
         self.server_socket.close()
-        self.log.info("[TcpProxy] Server shuted down!")
+        self.log.info("[TcpProxy] Server is closed!")

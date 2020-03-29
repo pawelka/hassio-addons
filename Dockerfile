@@ -1,7 +1,7 @@
 FROM python:2.7
 
-ADD inverter /
+ADD inverter /inverter
 
-RUN pip install pystrich
+RUN pip install paho-mqtt
 
-CMD [ "python", "inverter" ]
+CMD [ "python", "./inverter" ]

@@ -1,0 +1,1 @@
+docker run -v /$(pwd)/inverter/config:/inverter/config -p 53:53/udp -p 10000:10000 $1
