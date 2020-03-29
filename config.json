@@ -13,7 +13,8 @@
       "max_connection": 1
     },
     "fakedns": {
-      "initial_domain": "data1.solarmanpv.com"
+      "initial_domain": "data1.solarmanpv.com",
+      "target_ip": "192.168.1.2"
     },
     "log": {
       "log_level": "DEBUG"
@@ -35,7 +36,8 @@
       "max_connection": "int"
     },
     "fakedns": {
-      "initial_domain": "str"
+      "initial_domain": "str",
+      "target_ip": "str"
     },
     "log": {
       "log_level": "str"

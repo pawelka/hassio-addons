@@ -28,7 +28,7 @@ def load_config():
     config_paths = [mydir + '/config-org.ini']
     if os.path.exists(mydir + '/config/config.ini'):
         config_paths.append(mydir + '/config/config.ini')
-    if ext_config_path:
+    if ext_config_path and os.path.exists(ext_config_path):
         config_paths.append(ext_config_path)
     config = anyconfig.load(config_paths)
     return config
@@ -51,7 +51,7 @@ def main():
     pp = pprint.PrettyPrinter()
     logger.debug("[Inverter] Config: %s" % pp.pformat(config))
 
-    fake_dns = FakeDNS.FakeDNS(logger, config['fakedns']['initial_domain'])
+    fake_dns = FakeDNS.FakeDNS(logger, config)
     mqtt_client = MqttClient.MqttClient(logger, config)
     tcp_proxy = TcpProxy.TcpProxy(config, logger, fake_dns, create_callback(logger, mqtt_client))
     try:
