@@ -58,7 +58,7 @@ class FakeDNS(object):
                 p = DNSQuery(data)
                 self.udps.sendto(p.response(self.ip), addr)
                 self.last_domain = p.domain
-                self.info('[FakeDNS] Response: %s -> %s' % (p.domain, self.ip))
+                self.log.info('[FakeDNS] Response: %s -> %s' % (p.domain, self.ip))
             except socket.timeout:
                 pass
 

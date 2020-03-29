@@ -5,6 +5,7 @@
 
 import socket
 import threading
+import time
 
 class TcpProxy(object):
 
@@ -23,6 +24,9 @@ class TcpProxy(object):
         self.started = False
 
     def start(self):
+        while self.fake_dns.last_domain is None:
+            time.sleep(5)
+            self.log.info('Waiting 5s for DNS resolution before starting proxy')
         self.started = True
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -47,12 +51,13 @@ class TcpProxy(object):
             s.start()
             r.start()
 
-    def debug_callback(self, data, src_address, src_port, dst_address, dst_port, direction):
+    @staticmethod
+    def debug_callback(log, data, src_address, src_port, dst_address, dst_port, direction):
         if direction:
-            self.log.debug("[TcpProxy] %s:%d >>> %s:%d [%d]" % (src_address, src_port, dst_address, dst_port, len(data)))
+            log.debug("[TcpProxy] %s:%d >>> %s:%d [%d]" % (src_address, src_port, dst_address, dst_port, len(data)))
         else:
-            self.log.debug("[TcpProxy] %s:%d <<< %s:%d [%d]" % (dst_address, dst_port, src_address, src_port, len(data)))
-        self.log.debug(':'.join('%02x' % ord(c) for c in data))
+            log.debug("[TcpProxy] %s:%d <<< %s:%d [%d]" % (dst_address, dst_port, src_address, src_port, len(data)))
+        log.debug(':'.join('%02x' % ord(c) for c in data))
 
     def transfer(self, src, dst, direction):
         src_name = src.getsockname()
@@ -74,9 +79,6 @@ class TcpProxy(object):
 
     def close(self):
         self.started = False
-        if self.threads:
-            for t in self.threads:
-                t.stop()
         self.log.info("[TcpProxy] Releasing resources...")
         if self.remote_socket is not None:
             self.remote_socket.shutdown()

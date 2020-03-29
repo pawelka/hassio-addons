@@ -19,33 +19,22 @@ class MqttClient(object):
     def start(self):
         if not self.mqtt_enabled:
             return
+
         def on_mqtt_connect(client, userdata, flags, rc):
             # Subscribe to all topics in our namespace when we're connected. Send out
             # a message telling we're online
             self.log.info("[MqttClient] Connected with result code " + str(rc))
-            client.publish(
-                topic=self.mqtt_topic,
-                payload="online",
-                qos=self.mqtt_qos,
-                retain=self.mqtt_retain)
-
-        mqttc = mqtt.Client("inverter", clean_session=False)
-        if self.mqtt_username:
-            mqttc.username_pw_set(self.mqtt_username, self.mqtt_password)
-        mqttc.connect(self.mqtt_host, self.mqtt_port)
 
         def on_disconnect(client, userdata, rc):
             if rc != 0:
                 self.log.warning("[MqttClient] Unexpected MQTT disconnection. Will auto-reconnect")
 
+        mqttc = mqtt.Client("inverter", clean_session=False)
+        if self.mqtt_username:
+            mqttc.username_pw_set(self.mqtt_username, self.mqtt_password)
+        mqttc.connect(self.mqtt_host, self.mqtt_port)
         mqttc.on_connect = on_mqtt_connect
         mqttc.on_disconnect = on_disconnect
-        mqttc.will_set(
-            topic=self.mqtt_topic,
-            payload="offline",
-            qos=self.mqtt_qos,
-            retain=True)
-
         self.__mqttc = mqttc
         mqttc.loop_start()
 

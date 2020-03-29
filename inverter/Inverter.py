@@ -7,16 +7,19 @@ import os
 import sys
 import MqttClient
 import logging
+import json
 
 
 def create_callback(log, mqtt_client):
     def callback(data, src_address, src_port, dst_address, dst_port, direction):
-        TcpProxy.TcpProxy.debug_callback(data, src_address, src_port, dst_address, dst_port, direction)
-        if not direction and len(data) > 140:
+        TcpProxy.TcpProxy.debug_callback(log, data, src_address, src_port, dst_address, dst_port, direction)
+        if direction and len(data) > 140:
             msg = InverterMsg.InverterMsg(data)
+            dict = msg.dict()
             pp = pprint.PrettyPrinter()
-            log.debug("[Inverter] %s" % pp.pformat(msg.dict()))
-            mqtt_client.publish(msg.dict())
+            log.debug("[Inverter] Publishing to mqtt: %s" % pp.pformat(dict))
+            mqtt_client.publish(json.dumps(dict, ensure_ascii=False))
+    return callback
 
 
 def main():
@@ -48,5 +51,4 @@ def main():
         mqtt_client.close()
 
 
-if __name__ == "__main__":
-    main()
+
