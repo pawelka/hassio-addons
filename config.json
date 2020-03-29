@@ -1,0 +1,16 @@
+{
+  "name": "SofarSolarMQTT",
+  "version": "1",
+  "slug": "sofarsolar_mqtt",
+  "description": "SofarSolar WiFi Logger to MQTT",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "before",
+  "boot": "auto",
+  "options": {},
+  "schema": {},
+  "ports": {
+    "10000/tcp": 10000,
+    "53/udp": 53
+  }
+
+}
