@@ -3,3 +3,4 @@
 venv/
 inverter/config/config.ini
 *.log
+inverter/config/ext.yaml
