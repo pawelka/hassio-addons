@@ -2,12 +2,12 @@ import TcpProxy
 import pprint
 import InverterMsg
 import FakeDNS
-import ConfigParser
 import os
 import sys
 import MqttClient
 import logging
 import json
+import anyconfig
 
 
 def create_callback(log, mqtt_client):
@@ -22,25 +22,33 @@ def create_callback(log, mqtt_client):
     return callback
 
 
-def main():
+def load_config():
     mydir = os.path.dirname(os.path.abspath(__file__))
-    config = ConfigParser.RawConfigParser()
-    # Load the setting file
-    config.read([mydir + '/config-org.cfg', mydir + '/config/config.cfg'])
+    ext_config_path = os.environ.get('EXT_CONFIG_PATH', None)
+    config_paths = [mydir + '/config-org.ini', mydir + '/config/config.ini']
+    if ext_config_path:
+        config_paths.append(ext_config_path)
+    config = anyconfig.load(config_paths)
+    return config
+
+
+def main():
+    config = load_config()
 
     logger = logging.getLogger("Inverter")
-    file_handler = logging.FileHandler(config.get('log', 'log_filename'))
+    file_handler = logging.FileHandler(config['log']['log_filename'])
     console_handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     file_handler.setFormatter(formatter)
     console_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
-    logger.setLevel(logging.getLevelName(config.get('log', 'log_level')))
+    logger.setLevel(logging.getLevelName(config['log']['log_level']))
 
-    logger.debug({section: dict(config.items(section)) for section in config.sections()})
+    pp = pprint.PrettyPrinter()
+    logger.debug("[Inverter] Config: %s" % pp.pformat(config))
 
-    fake_dns = FakeDNS.FakeDNS(logger, config.get('fakedns', 'initial_domain'))
+    fake_dns = FakeDNS.FakeDNS(logger, config['fakedns']['initial_domain'])
     mqtt_client = MqttClient.MqttClient(logger, config)
     tcp_proxy = TcpProxy.TcpProxy(config, logger, fake_dns, create_callback(logger, mqtt_client))
     try:

@@ -12,9 +12,9 @@ class TcpProxy(object):
     def __init__(self, config, log, fake_dns, callback):
         self.callback = callback
         self.log = log
-        self.local_host = config.get('proxy', 'bind_ip')
-        self.port = int(config.get('proxy', 'bind_port'))
-        self.max_connection = int(config.get('proxy', 'max_connection'))
+        self.local_host = config['proxy']['bind_ip']
+        self.port = int(config['proxy']['bind_port'])
+        self.max_connection = int(config['proxy']['max_connection'])
         self.fake_dns = fake_dns
         self.server_socket = None
         self.local_socket = None

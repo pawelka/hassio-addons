@@ -6,14 +6,14 @@ class MqttClient(object):
 
     def __init__(self, log, config):
         self.log = log;
-        self.mqtt_enabled = config.getboolean('mqtt', 'mqtt_enabled')
-        self.mqtt_host = config.get('mqtt', 'mqtt_host')
-        self.mqtt_port = config.get('mqtt', 'mqtt_port')
-        self.mqtt_topic = config.get('mqtt', 'mqtt_topic')
-        self.mqtt_username = config.get('mqtt', 'mqtt_username')
-        self.mqtt_password = config.get('mqtt', 'mqtt_password')
-        self.mqtt_qos = int(config.get('mqtt', 'mqtt_qos'))
-        self.mqtt_retain = bool(config.get('mqtt', 'mqtt_retain'))
+        self.mqtt_enabled = bool(config['mqtt']['mqtt_enabled'])
+        self.mqtt_host = config['mqtt']['mqtt_host']
+        self.mqtt_port = config['mqtt']['mqtt_port']
+        self.mqtt_topic = config['mqtt']['mqtt_topic']
+        self.mqtt_username = config['mqtt']['mqtt_username']
+        self.mqtt_password = config['mqtt']['mqtt_password']
+        self.mqtt_qos = int(config['mqtt']['mqtt_qos'])
+        self.mqtt_retain = bool(config['mqtt']['mqtt_retain'])
         self.__mqttc = None
 
     def start(self):
