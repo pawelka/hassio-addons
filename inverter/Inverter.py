@@ -25,7 +25,9 @@ def create_callback(log, mqtt_client):
 def load_config():
     mydir = os.path.dirname(os.path.abspath(__file__))
     ext_config_path = os.environ.get('EXT_CONFIG_PATH', None)
-    config_paths = [mydir + '/config-org.ini', mydir + '/config/config.ini']
+    config_paths = [mydir + '/config-org.ini']
+    if os.path.exists(mydir + '/config/config.ini'):
+        config_paths.append(mydir + '/config/config.ini')
     if ext_config_path:
         config_paths.append(ext_config_path)
     config = anyconfig.load(config_paths)
