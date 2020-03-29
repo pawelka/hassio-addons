@@ -1,7 +1,5 @@
-import struct  # Converting bytes to numbers
-import re
+import struct
 import binascii
-import pprint
 
 # V5 table
 offset = {
@@ -18,17 +16,19 @@ offset = {
     11: 76,  # e_today(76)
     12: 80,  # e_total(71)
 }
-    #?    13: 84,  # h_total(75)
-    #?    14: 79,  # run_state(79)
-    #?    15: 81,  # GVFaultValue(81)
-    #?    16: 83,  # GVFaultValue(83)
-    #?    17: 85,  # GZFaultValue(85)
-    #?    18: 87,  # TmpFaultValue(87)
-    #?    19: 89,  # PVFaultValue(89)
-    #?    20: 91,  # GFCIFaultValue(91)
-    #?    21: 93,  # errorMsg(93)
-    #?    22: 101,  # main_fwver(101)
-    #?    23: 121, }  # slave_fwver(121)
+
+
+# ?    13: 84,  # h_total(75)
+# ?    14: 79,  # run_state(79)
+# ?    15: 81,  # GVFaultValue(81)
+# ?    16: 83,  # GVFaultValue(83)
+# ?    17: 85,  # GZFaultValue(85)
+# ?    18: 87,  # TmpFaultValue(87)
+# ?    19: 89,  # PVFaultValue(89)
+# ?    20: 91,  # GFCIFaultValue(91)
+# ?    21: 93,  # errorMsg(93)
+# ?    22: 101,  # main_fwver(101)
+# ?    23: 121, }  # slave_fwver(121)
 
 
 class InverterMsg(object):
@@ -277,29 +277,18 @@ class InverterMsg(object):
 
     def dict(self):
         d = {'id': self.id, "temp": self.temp}
-        d["v_pv" + str(1)] = self.v_pv(1)
-        d["v_pv" + str(2)] = self.v_pv(2)
-        d["i_pv" + str(1)] = self.i_pv(1)
-        d["i_pv" + str(2)] = self.i_pv(2)
-        d["v_ac" + str(1)] = self.v_ac(1)
-        d["v_ac" + str(2)] = self.v_ac(2)
-        d["v_ac" + str(3)] = self.v_ac(3)
-        d["i_ac" + str(1)] = self.i_ac(1)
-        d["i_ac" + str(2)] = self.i_ac(2)
-        d["i_ac" + str(3)] = self.i_ac(3)
+        d["v_pv1"] = self.v_pv(1)
+        d["v_pv2"] = self.v_pv(2)
+        d["i_pv1"] = self.i_pv(1)
+        d["i_pv2"] = self.i_pv(2)
+        d["v_ac1"] = self.v_ac(1)
+        d["v_ac2"] = self.v_ac(2)
+        d["v_ac3"] = self.v_ac(3)
+        d["i_ac1"] = self.i_ac(1)
+        d["i_ac2"] = self.i_ac(2)
+        d["i_ac3"] = self.i_ac(3)
         d["f_ac"] = self.f_ac()
         d["power"] = self.p_ac()
         d["e_today"] = self.e_today
         d["e_total"] = self.e_total
         return d
-
-def debugMsg(data):
-    data = data.replace(':', '')
-    msg = InverterMsg(bytearray.fromhex(data))
-    pp = pprint.PrettyPrinter()
-    pp.pprint(msg.dict())
-    print "#######################################################################"
-
-
-if __name__ == '__main__':
-    debugMsg("a5:8d:00:10:42:50:62:2d:bf:c8:65:01:01:27:5c:50:19:00:5b:1c:00:00:44:26:63:5e:01:00:e8:15:00:00:53:46:34:45:53:30:30:38:4b:42:32:31:33:33:20:20:9a:01:dd:0c:75:0c:2d:00:2b:00:29:00:29:00:29:00:f5:08:eb:08:ee:08:88:13:c8:0a:00:00:1f:02:00:00:2e:18:00:00:b6:01:00:00:02:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:56:32:30:30:56:31:30:30:1d:00:60:18:d1:0c:71:0c:3c:00:01:00:56:05:54:08:b3:06:0c:00:00:00:00:00:06:00:e7:03:e0:03:d9:03:00:00:00:00:00:00:00:00:3c:15")

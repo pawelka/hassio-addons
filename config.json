@@ -7,6 +7,12 @@
   "startup": "before",
   "boot": "auto",
   "options": {
+    "inverter": {
+      "name": "Inverter",
+      "sn": "SF4ES00XXXXXXX",
+      "manufacturer": "SofarSolar",
+      "model": "8.8KTL-X"
+    },
     "proxy": {
       "bind_ip": "0.0.0.0",
       "bind_port": 10000,
@@ -30,6 +36,12 @@
     }
   },
   "schema": {
+    "inverter": {
+      "name": "str",
+      "sn": "str",
+      "manufacturer": "str",
+      "model": "str"
+    },
     "proxy": {
       "bind_ip": "str",
       "bind_port": "int",
