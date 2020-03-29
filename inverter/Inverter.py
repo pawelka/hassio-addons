@@ -38,12 +38,13 @@ def main():
     config = load_config()
 
     logger = logging.getLogger("Inverter")
-    file_handler = logging.FileHandler(config['log']['log_filename'])
-    console_handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-    file_handler.setFormatter(formatter)
+    if config['log']['log_filename']:
+        file_handler = logging.FileHandler(config['log']['log_filename'])
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+    console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
     logger.addHandler(console_handler)
     logger.setLevel(logging.getLevelName(config['log']['log_level']))
 
