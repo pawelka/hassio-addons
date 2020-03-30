@@ -57,7 +57,7 @@ class MqttClient(object):
     def device_connected(self):
         self.log.info("[MqttClient] Sending device connected message")
         self.__mqttc.publish(
-            topic=self.mqtt_topic,
+            topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
             payload="online",
             qos=self.mqtt_qos,
             retain=self.mqtt_retain)
@@ -65,7 +65,7 @@ class MqttClient(object):
     def device_disconnected(self):
         self.log.info("[MqttClient] Sending device disconnected message")
         self.__mqttc.publish(
-            topic=self.mqtt_topic,
+            topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
             payload="offline",
             qos=self.mqtt_qos,
             retain=self.mqtt_retain)
