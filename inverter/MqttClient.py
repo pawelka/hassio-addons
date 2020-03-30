@@ -60,16 +60,16 @@ class MqttClient(object):
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="online",
-            qos=self.mqtt_qos,
-            retain=self.mqtt_retain)
+            qos=1,
+            retain=False)
 
     def device_disconnected(self):
         self.log.info("[MqttClient] Sending device disconnected message")
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="offline",
-            qos=self.mqtt_qos,
-            retain=self.mqtt_retain)
+            qos=1,
+            retain=False)
 
     def hass_sensors_config(self, sensor_name_prefix):
 
@@ -116,7 +116,7 @@ class MqttClient(object):
             self.__mqttc.publish(
                         topic="homeassistant/sensor/"+self.inverter_sn+"_"+sensor+"/config",
                         payload=msg,
-                        qos=1,
+                        qos=2,
                         retain=False)
 
 
