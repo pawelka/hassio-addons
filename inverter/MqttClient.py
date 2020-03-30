@@ -57,7 +57,7 @@ class MqttClient(object):
     def device_connected(self):
         self.log.info("[MqttClient] Sending device connected message")
         self.__mqttc.publish(
-            topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
+            topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="online",
             qos=self.mqtt_qos,
             retain=self.mqtt_retain)
@@ -65,7 +65,7 @@ class MqttClient(object):
     def device_disconnected(self):
         self.log.info("[MqttClient] Sending device disconnected message")
         self.__mqttc.publish(
-            topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
+            topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="offline",
             qos=self.mqtt_qos,
             retain=self.mqtt_retain)
@@ -95,6 +95,7 @@ class MqttClient(object):
                               "manufacturer": self.inverter_manufacturer,
                               "model": self.inverter_model}
             d[k]["state_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/state"
+            d[k]["availability_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/availability"
             d[k]["unique_id"] = self.inverter_sn + "_" + k
             d[k]["value_template"] = "{{ value_json."+k+" }}"
             d[k]["name"] = k
