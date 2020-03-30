@@ -96,6 +96,7 @@ class MqttClient(object):
                               "model": self.inverter_model}
             d[k]["state_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/state"
             d[k]["unique_id"] = self.inverter_sn + "_" + k
+            d[k]["entity_id"] = self.inverter_sn + "_" + k
             d[k]["value_template"] = "{{ value_json."+k+" }}"
             d[k]["name"] = k
             if not k.startswith("e_"):
