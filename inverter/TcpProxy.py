@@ -36,23 +36,26 @@ class TcpProxy(object):
         self.server_socket.listen(self.max_connection)
         self.log.info('[TcpProxy] Server started [%s:%d]' % (self.local_host, self.port))
         while self.started:
-            self.local_socket, self.local_address = self.server_socket.accept()
-            self.log.info('[TcpProxy] Connect to [%s:%d] to get the content of [%s:%d]' % (
-                self.local_host, self.port, self.fake_dns.last_domain, self.port))
-            self.connected_callback()
-            self.log.info('[TcpProxy] Detect connection from [%s:%s]' % (self.local_address[0], self.local_address[1]))
-            self.log.info("[TcpProxy] Trying to connect the REMOTE server [%s:%d]" % (self.fake_dns.last_domain, self.port))
-            self.remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.remote_socket.connect((self.fake_dns.last_domain, self.port))
-            self.log.info("[TcpProxy] Tunnel connected! Tranfering data...")
-            s = threading.Thread(target=self.transfer, args=(
-                self.remote_socket, self.local_socket, False))
-            r = threading.Thread(target=self.transfer, args=(
-                self.local_socket, self.remote_socket, True))
-            self.threads.append(s)
-            self.threads.append(r)
-            s.start()
-            r.start()
+            try:
+                self.local_socket, self.local_address = self.server_socket.accept()
+                self.log.info('[TcpProxy] Connect to [%s:%d] to get the content of [%s:%d]' % (
+                    self.local_host, self.port, self.fake_dns.last_domain, self.port))
+                self.connected_callback()
+                self.log.info('[TcpProxy] Detect connection from [%s:%s]' % (self.local_address[0], self.local_address[1]))
+                self.log.info("[TcpProxy] Trying to connect the REMOTE server [%s:%d]" % (self.fake_dns.last_domain, self.port))
+                self.remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.remote_socket.connect((self.fake_dns.last_domain, self.port))
+                self.log.info("[TcpProxy] Tunnel connected! Tranfering data...")
+                s = threading.Thread(target=self.transfer, args=(
+                    self.remote_socket, self.local_socket, False))
+                r = threading.Thread(target=self.transfer, args=(
+                    self.local_socket, self.remote_socket, True))
+                self.threads.append(s)
+                self.threads.append(r)
+                s.start()
+                r.start()
+            except socket.error as ex:
+                self.log.error("[TcpProxy] socket error: %s" % s)
 
     @staticmethod
     def debug_callback(log, data, src_address, src_port, dst_address, dst_port, direction):
