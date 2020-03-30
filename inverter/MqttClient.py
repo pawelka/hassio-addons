@@ -107,9 +107,9 @@ class MqttClient(object):
 
         return d
 
-    def configure_hass(self):
+    def configure_hass(self, sensor_name_prefix):
         self.log.info("[MqttClient] Configuring Home Assistant" )
-        sensors = self.hass_sensors_config()
+        sensors = self.hass_sensors_config(sensor_name_prefix)
         for sensor in sensors:
             msg = json.dumps(sensors[sensor], ensure_ascii=False)
             self.log.debug("[MqttClient] Sensor config message to HA: %s" % msg)
