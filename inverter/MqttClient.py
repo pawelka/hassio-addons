@@ -44,15 +44,10 @@ class MqttClient(object):
         mqttc.loop_start()
 
     def close(self):
-
         self.__mqttc.disconnect()
         self.__mqttc.loop_stop()
 
     def publish(self, msg):
-        if not self.hass_configured:
-            self.configure_hass(msg[id])
-            self.hass_configured = True
-
         self.__mqttc.publish(
                 topic=self.mqtt_topic,
                 payload=msg,
