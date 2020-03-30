@@ -49,7 +49,7 @@ class MqttClient(object):
 
     def publish(self, msg):
         self.__mqttc.publish(
-                topic=self.mqtt_topic,
+                topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
                 payload=msg,
                 qos=self.mqtt_qos,
                 retain=self.mqtt_retain)
