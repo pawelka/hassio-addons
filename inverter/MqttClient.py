@@ -28,7 +28,8 @@ class MqttClient(object):
             # Subscribe to all topics in our namespace when we're connected. Send out
             # a message telling we're online
             self.log.info("[MqttClient] Connected with result code " + str(rc))
-            self.configure_hass()
+            self.configure_hass(True)
+            self.configure_hass(False)
 
         def on_disconnect(client, userdata, rc):
             if rc != 0:
@@ -70,7 +71,7 @@ class MqttClient(object):
             qos=self.mqtt_qos,
             retain=self.mqtt_retain)
 
-    def hass_sensors_config(self):
+    def hass_sensors_config(self, sensor_name_prefix):
 
         d = {}
         d["temp"] = {"unit_of_measurement": u"\N{DEGREE SIGN}C"}
@@ -96,9 +97,11 @@ class MqttClient(object):
                               "model": self.inverter_model}
             d[k]["state_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/state"
             d[k]["unique_id"] = self.inverter_sn + "_" + k
-            d[k]["entity_id"] = self.inverter_sn + "_" + k
             d[k]["value_template"] = "{{ value_json."+k+" }}"
-            d[k]["name"] = k
+            if sensor_name_prefix:
+                d[k]["name"] = self.inverter_sn + "_" + k
+            else:
+                d[k]["name"] = k
             if not k.startswith("e_"):
                 d[k]["availability_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/availability"
 
