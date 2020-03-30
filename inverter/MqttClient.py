@@ -109,7 +109,7 @@ class MqttClient(object):
             msg = json.dumps(sensors[sensor], ensure_ascii=False)
             self.log.debug("[MqttClient] Sensor config message to HA: %s" % msg)
             self.__mqttc.publish(
-                        topic="homeassistant/sensor/"+self.inverter_name+"_"+sensor+"/config",
+                        topic="homeassistant/sensor/"+self.inverter_sn+"_"+sensor+"/config",
                         payload=msg,
                         qos=1,
                         retain=False)
