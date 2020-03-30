@@ -73,7 +73,7 @@ class MqttClient(object):
     def hass_sensors_config(self):
 
         d = {}
-        d["temp"] = {"device_class": "temperature", "unit_of_measurement": u"\N{DEGREE SIGN}C"}
+        d["temp"] = {"unit_of_measurement": u"\N{DEGREE SIGN}C"}
         d["v_pv1"] = {"unit_of_measurement": "V"}
         d["v_pv2"] = {"unit_of_measurement": "V"}
         d["i_pv1"] = {"unit_of_measurement": "A"}
@@ -85,7 +85,7 @@ class MqttClient(object):
         d["i_ac2"] = {"unit_of_measurement": "A"}
         d["i_ac3"] = {"unit_of_measurement": "A"}
         d["f_ac"] = {"unit_of_measurement": "Hz"}
-        d["power"] = {"device_class": "power", "unit_of_measurement": "W"}
+        d["power"] = {"unit_of_measurement": "W"}
         d["e_today"] = {"unit_of_measurement": "kWh"}
         d["e_total"] = {"unit_of_measurement": "kWh"}
 
