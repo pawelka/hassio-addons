@@ -169,16 +169,7 @@ Got questions?
 
 In case you've found a bug, please [open an issue on our GitHub][issue].
 
-[aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
-[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[discord]: https://discord.gg/c5DvZ4e
-[forum]: https://community.home-assistant.io
-[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
-[issue]: https://github.com/home-assistant/hassio-addons/issues
-[reddit]: https://reddit.com/r/homeassistant
-[repository]: https://github.com/hassio-addons/repository
-[device]: images/device.png
-[inverter]: images/inverter.png
-[dashboard]: images/dashboard.png
+[issue]: https://github.com/pawelka/hassio-addons/issues
+[device]: https://raw.githubusercontent.com/pawelka/hassio-addons/master/sofarsolar/images/device.png
+[inverter]: https://raw.githubusercontent.com/pawelka/hassio-addons/master/sofarsolar/images/inverter.png
+[dashboard]: https://raw.githubusercontent.com/pawelka/hassio-addons/master/sofarsolar/images/dashboard.png
