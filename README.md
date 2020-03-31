@@ -146,6 +146,10 @@ You need to conifgure DNS server pointing to IP. The easiest way is to:
 
 ![Inverter][inverter]
 
+## Example dashboard
+
+![Dashboard][dashboard]
+
 ## Known issues and limitations
 
 - Add-on expose port 53 for DNS. There can be a conflict with some deployment on HA. The one which expose DNS port 
@@ -170,3 +174,4 @@ In case you've found a bug, please [open an issue on our GitHub][issue].
 [repository]: https://github.com/hassio-addons/repository
 [device]: ./images/device.png
 [inverter]: ./images/inverter.png
+[dashboard]: ./images/dashboard.png
