@@ -11,11 +11,9 @@
       "name": "Inverter",
       "sn": "SF4ES00XXXXXXX",
       "manufacturer": "SofarSolar",
-      "model": "8.8KTL-X"
+      "model": "KTL-X"
     },
     "proxy": {
-      "bind_ip": "0.0.0.0",
-      "bind_port": 10000,
       "max_connection": 1
     },
     "fakedns": {
@@ -23,7 +21,7 @@
       "target_ip": "192.168.1.2"
     },
     "log": {
-      "log_level": "DEBUG"
+      "log_level": "INFO"
     },
     "mqtt": {
       "mqtt_host": "127.0.0.1",
@@ -37,31 +35,26 @@
   },
   "schema": {
     "inverter": {
-      "name": "str",
+      "name": "str?",
       "sn": "str",
-      "manufacturer": "str",
-      "model": "str"
-    },
-    "proxy": {
-      "bind_ip": "str",
-      "bind_port": "int",
-      "max_connection": "int"
+      "manufacturer": "str?",
+      "model": "str?"
     },
     "fakedns": {
-      "initial_domain": "str",
+      "initial_domain": "str?",
       "target_ip": "str"
     },
     "log": {
-      "log_level": "str"
+      "log_level": "str?"
     },
     "mqtt": {
       "mqtt_host": "str",
       "mqtt_port": "int",
-      "mqtt_topic": "str",
-      "mqtt_username": "str",
-      "mqtt_password": "password",
-      "mqtt_qos": "int",
-      "mqtt_retain": "bool"
+      "mqtt_topic": "str?",
+      "mqtt_username": "str?",
+      "mqtt_password": "password?",
+      "mqtt_qos": "int?",
+      "mqtt_retain": "bool?"
     }
   },
   "ports": {
