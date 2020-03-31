@@ -60,7 +60,6 @@ class MqttClient(object):
     def activity_loop(self):
         while self.check_loop:
             try:
-                self.log.debug("Checking activity")
                 if self.active and self.last_message_time is not None \
                         and (time.time() - self.last_message_time) >= self.idle_time:
                     self.device_deactivated()
