@@ -1,6 +1,6 @@
 .idea
 *.pyc
 venv/
-inverter/config/config.ini
+sofarsolar/inverter/config/config.ini
 *.log
-inverter/config/ext.yaml
+sofarsolar/inverter/config/ext.yaml
