@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import InverterMsg
 import json
 import time
+import threading
 
 class MqttClient(object):
 
@@ -20,6 +21,11 @@ class MqttClient(object):
         self.inverter_name = config['inverter']['name']
         self.inverter_manufacturer = config['inverter']['manufacturer']
         self.inverter_model = config['inverter']['model']
+        self.idle_time = int(config['inverter']['idle_time'])
+        self.active = False
+        self.last_message_time = None
+        self.ha_configured = False
+        self.check_loop = False
 
     def start(self):
         if not self.mqtt_enabled:
@@ -29,8 +35,10 @@ class MqttClient(object):
             # Subscribe to all topics in our namespace when we're connected. Send out
             # a message telling we're online
             self.log.info("[MqttClient] Connected with result code " + str(rc))
-            self.configure_hass(True)
-            self.configure_hass(False)
+            if not self.ha_configured:
+                self.configure_hass(True)
+                self.configure_hass(False)
+                self.ha_configured = True
 
         def on_disconnect(client, userdata, rc):
             if rc != 0:
@@ -45,27 +53,48 @@ class MqttClient(object):
         self.__mqttc = mqttc
         mqttc.loop_start()
 
+        self.check_loop = True
+        at = threading.Thread(target=self.activity_loop)
+        at.start()
+
+    def activity_loop(self):
+        while self.check_loop:
+            try:
+                self.log.debug("Checking activity")
+                if self.active and self.last_message_time is not None \
+                        and (time.time() - self.last_message_time) >= self.idle_time:
+                    self.device_deactivated()
+                time.sleep(1)
+            except Exception as ex:
+                self.log.error(ex)
+
     def close(self):
         self.__mqttc.disconnect()
         self.__mqttc.loop_stop()
+        self.check_loop = False
 
     def publish(self, msg):
+        if not self.active:
+            self.device_activated()
+        self.last_message_time = time.time()
         self.__mqttc.publish(
                 topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
                 payload=msg,
                 qos=self.mqtt_qos,
                 retain=self.mqtt_retain)
 
-    def device_connected(self):
+    def device_activated(self):
         self.log.info("[MqttClient] Sending device connected message")
+        self.active = True
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="online",
             qos=1,
             retain=False)
 
-    def device_disconnected(self):
+    def device_deactivated(self):
         self.log.info("[MqttClient] Sending device disconnected message")
+        self.active = False
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="offline",

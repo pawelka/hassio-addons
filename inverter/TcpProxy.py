@@ -7,12 +7,11 @@ import socket
 import threading
 import time
 
+
 class TcpProxy(object):
 
-    def __init__(self, config, log, fake_dns, message_callback, connected_callback, disconnected_callback):
+    def __init__(self, config, log, fake_dns, message_callback):
         self.message_callback = message_callback
-        self.connected_callback = connected_callback
-        self.disconnected_callback = disconnected_callback
         self.log = log
         self.local_host = config['proxy']['bind_ip']
         self.port = int(config['proxy']['bind_port'])
@@ -40,9 +39,10 @@ class TcpProxy(object):
                 self.local_socket, self.local_address = self.server_socket.accept()
                 self.log.info('[TcpProxy] Connect to [%s:%d] to get the content of [%s:%d]' % (
                     self.local_host, self.port, self.fake_dns.last_domain, self.port))
-                self.connected_callback()
-                self.log.info('[TcpProxy] Detect connection from [%s:%s]' % (self.local_address[0], self.local_address[1]))
-                self.log.info("[TcpProxy] Trying to connect the REMOTE server [%s:%d]" % (self.fake_dns.last_domain, self.port))
+                self.log.info(
+                    '[TcpProxy] Detect connection from [%s:%s]' % (self.local_address[0], self.local_address[1]))
+                self.log.info(
+                    "[TcpProxy] Trying to connect the REMOTE server [%s:%d]" % (self.fake_dns.last_domain, self.port))
                 self.remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.remote_socket.connect((self.fake_dns.last_domain, self.port))
                 self.log.info("[TcpProxy] Tunnel connected! Tranfering data...")
@@ -80,7 +80,6 @@ class TcpProxy(object):
             self.message_callback(buffer, src_address, src_port, dst_address, dst_port, direction)
             dst.send(buffer)
         self.log.info("[TcpProxy] Closing connections! [%s:%d]" % (src_address, src_port))
-        self.disconnected_callback()
         src.close()
 
     def close(self):

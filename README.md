@@ -51,6 +51,7 @@ inverter:
   sn: SF4ES00XXXXXXX
   manufacturer: SofarSolar
   model: 8.8KTL-X
+  idle_time: 660
 log:
   log_level: INFO
 fakedns:
@@ -83,6 +84,12 @@ Manufacturer of the device in HA.
 Model of the device in HA.
 
 *Default: KTL-X*
+
+#### Option: `inverter.idle_time` (optional)
+Time in seconds after which HA should receive offline message to sensors.
+Normally WiFi Logger send status every 5 min, but configured 11 min restarts support.
+
+*Default: 660*
 
 #### Option: `log.log_level` (optional)
 Logging level: ERROR, WARNING, INFO, DEBUG

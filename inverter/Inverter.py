@@ -8,7 +8,6 @@ import MqttClient
 import logging
 import json
 import anyconfig
-import time
 
 
 def create_callback(log, mqtt_client):
@@ -54,8 +53,7 @@ def main():
 
     fake_dns = FakeDNS.FakeDNS(logger, config)
     mqtt_client = MqttClient.MqttClient(logger, config)
-    tcp_proxy = TcpProxy.TcpProxy(config, logger, fake_dns, create_callback(logger, mqtt_client),
-                                  mqtt_client.device_connected, mqtt_client.device_disconnected)
+    tcp_proxy = TcpProxy.TcpProxy(config, logger, fake_dns, create_callback(logger, mqtt_client))
     try:
         mqtt_client.start()
         fake_dns.start()
