@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import InverterMsg
 import json
+import time
 
 class MqttClient(object):
 
@@ -118,6 +119,7 @@ class MqttClient(object):
                         payload=msg,
                         qos=2,
                         retain=False)
+            time.sleep(0.1)
 
 
 if __name__ == '__main__':
