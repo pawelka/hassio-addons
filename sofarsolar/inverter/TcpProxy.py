@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Tcp Port Forwarding (Reverse Proxy)
-# Author : WangYihang <wangyihanger@gmail.com>
-
 import socket
 import threading
 import time
