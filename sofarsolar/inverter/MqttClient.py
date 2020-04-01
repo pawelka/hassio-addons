@@ -88,8 +88,8 @@ class MqttClient(object):
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="online",
-            qos=1,
-            retain=False)
+            qos=2,
+            retain=True)
 
     def device_deactivated(self):
         self.log.info("[MqttClient] Sending device disconnected message")
@@ -97,8 +97,8 @@ class MqttClient(object):
         self.__mqttc.publish(
             topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
             payload="offline",
-            qos=1,
-            retain=False)
+            qos=2,
+            retain=True)
 
     def hass_sensors_config(self, sensor_name_prefix):
 
