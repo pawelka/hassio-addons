@@ -13,7 +13,8 @@ import anyconfig
 def create_callback(log, mqtt_client):
     def callback(data, src_address, src_port, dst_address, dst_port, direction):
         TcpProxy.TcpProxy.debug_callback(log, data, src_address, src_port, dst_address, dst_port, direction)
-        if direction and len(data) > 140:
+        data_len = len(data)
+        if direction and 140 < data_len < 170:
             msg = InverterMsg.InverterMsg(data)
             dict = msg.dict()
             pp = pprint.PrettyPrinter()

@@ -50,7 +50,7 @@ class TcpProxy(object):
                 s.start()
                 r.start()
             except socket.error as ex:
-                self.log.error("[TcpProxy] socket error: %s" % s)
+                self.log.error("[TcpProxy] socket error: %s" % ex)
 
     @staticmethod
     def debug_callback(log, data, src_address, src_port, dst_address, dst_port, direction):
