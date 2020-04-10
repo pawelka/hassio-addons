@@ -1,0 +1,47 @@
+{
+  "name": "Supla MQTT Integration",
+  "version": "1.0",
+  "slug": "supla_mqtt_integration",
+  "description": "Integrate supla cloud with MQTT",
+  "arch": ["amd64"],
+  "startup": "before",
+  "boot": "auto",
+  "options": {
+    "supla": {
+      "port": 2016,
+      "host": "127.0.0.1",
+      "protocol_version": 10,
+      "email": "yourmail@here.pl"
+    },
+    "mqtt": {
+      "host": "127.0.0.1",
+      "port": 1883,
+      "commands_file_path": "config-supla/command.yaml",
+      "states_file_path": "config-supla/state.yaml",
+      "client_name": "supla_mqtt_client",
+      "protocol_version": 3,
+      "publish_supla_events": true,
+      "username": "",
+      "password": ""
+    }
+  },
+  "schema": {
+    "supla": {
+      "port": "int?",
+      "host": "str",
+      "protocol_version": "int?",
+      "email": "str"
+    },
+    "mqtt": {
+      "host": "str",
+      "port": "int?",
+      "commands_file_path": "str?",
+      "states_file_path": "str?",
+      "client_name": "str?",
+      "protocol_version": "int?",
+      "publish_supla_events": "bool?",
+      "username": "str?",
+      "password": "str?"
+    }
+  }
+}
