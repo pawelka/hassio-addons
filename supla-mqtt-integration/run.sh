@@ -21,3 +21,5 @@ supla:
   protocol_version: $(jq --raw-output '.supla.protocol_version // "10"' $CONFIG_FILE)
   email: '$(jq --raw-output '.supla.email' $CONFIG_FILE)'
 EOF
+
+./supla-mqtt-client -config generated-config.yaml
