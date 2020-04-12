@@ -22,4 +22,9 @@ supla:
   email: '$(jq --raw-output '.supla.email' $CONFIG_FILE)'
 EOF
 
+if [ ! -d "/data/supla-mqtt-client-data" ]; then  
+  mkdir /data/supla-mqtt-client-data
+  ln -s /data/supla-mqtt-client-data /root/.supla-mqtt-client
+fi
+
 ./supla-mqtt-client -config generated-config.yaml
