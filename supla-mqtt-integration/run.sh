@@ -24,7 +24,8 @@ EOF
 
 if [ ! -d "/data/supla-mqtt-client-data" ]; then  
   mkdir /data/supla-mqtt-client-data
-  ln -s /data/supla-mqtt-client-data /root/.supla-mqtt-client
 fi
+
+ln -s /data/supla-mqtt-client-data /root/.supla-mqtt-client
 
 ./supla-mqtt-client -config generated-config.yaml
