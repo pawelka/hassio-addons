@@ -1,0 +1,66 @@
+{
+  "name": "Supla Cloud & Server",
+  "version": "1.0",
+  "slug": "supla_cloud_and_server",
+  "description": "Supla Cloud & Server",
+  "arch": ["amd64"],
+  "startup": "before",
+  "boot": "auto",
+  "services": ["mysql:need"],
+  "ports": {
+    "2015/tcp": 2015,
+    "2016/tcp": 2016,
+    "80/tcp": 8332,
+    "443/tcp": 8333
+    },
+  "options": {
+    "mysql": {
+      "host": "core-mariadb",
+      "port": 3306,
+      "database": "supla",
+      "username": "supla",
+      "password": "supla123!"
+    },
+    "supla": {
+      "server": "192.168.1.2:8333",
+      "secret": "aaabbbcccdddeeefffggghhhiiijjj",
+      "protocol": "https",
+      "first_user_email": "your@mail.here",
+      "first_user_password": "YourPasswordHere"
+    },
+    "mailer": {
+      "host": "127.0.0.1",
+      "port": 465,
+      "username": "~",
+      "password": "~",
+      "encryption": "~",
+      "from": "~",
+      "admin_email": "~"
+    }
+  },
+  "schema": {
+    "mysql": {
+      "host": "str",
+      "port": "int",
+      "database": "str",
+      "username": "str",
+      "password": "str"
+    },
+    "supla": {
+      "server": "str",
+      "secret": "str",
+      "protocol": "str",
+      "first_user_email": "str",
+      "first_user_password": "str"
+    },
+    "mailer": {
+      "host": "str",
+      "port": "int",
+      "username": "str",
+      "password": "str",
+      "encryption": "str",
+      "from": "str",
+      "admin_email": "str"
+    }
+  }
+}
