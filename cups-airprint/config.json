@@ -1,0 +1,12 @@
+{
+  "name": "Cups Airprint",
+  "version": "1.0",
+  "slug": "cups_airprint",
+  "description": "Cups Airprint",
+  "arch": ["amd64"],
+  "startup": "before",
+  "boot": "auto",
+  "host_network": "true",
+  "options": {},
+  "schema": {}
+}
