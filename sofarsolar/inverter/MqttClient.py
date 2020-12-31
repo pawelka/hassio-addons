@@ -53,28 +53,28 @@ class MqttClient(object):
         self.__mqttc = mqttc
         mqttc.loop_start()
 
-        self.check_loop = True
-        at = threading.Thread(target=self.activity_loop)
-        at.start()
+        # self.check_loop = True
+        # at = threading.Thread(target=self.activity_loop)
+        # at.start()
 
-    def activity_loop(self):
-        while self.check_loop:
-            try:
-                if self.active and self.last_message_time is not None \
-                        and (time.time() - self.last_message_time) >= self.idle_time:
-                    self.device_deactivated()
-                time.sleep(1)
-            except Exception as ex:
-                self.log.error(ex)
+    # def activity_loop(self):
+    #     while self.check_loop:
+    #         try:
+    #             if self.active and self.last_message_time is not None \
+    #                     and (time.time() - self.last_message_time) >= self.idle_time:
+    #                 self.device_deactivated()
+    #             time.sleep(1)
+    #         except Exception as ex:
+    #             self.log.error(ex)
 
     def close(self):
         self.__mqttc.disconnect()
         self.__mqttc.loop_stop()
-        self.check_loop = False
+        # self.check_loop = False
 
     def publish(self, msg):
-        if not self.active:
-            self.device_activated()
+        # if not self.active:
+        #     self.device_activated()
         self.last_message_time = time.time()
         self.__mqttc.publish(
                 topic=self.mqtt_topic+"/"+self.inverter_sn+"/state",
@@ -82,23 +82,23 @@ class MqttClient(object):
                 qos=self.mqtt_qos,
                 retain=self.mqtt_retain)
 
-    def device_activated(self):
-        self.log.info("[MqttClient] Sending device connected message")
-        self.active = True
-        self.__mqttc.publish(
-            topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
-            payload="online",
-            qos=2,
-            retain=True)
+    # def device_activated(self):
+    #     self.log.info("[MqttClient] Sending device connected message")
+    #     self.active = True
+    #     self.__mqttc.publish(
+    #         topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
+    #         payload="online",
+    #         qos=2,
+    #         retain=True)
 
-    def device_deactivated(self):
-        self.log.info("[MqttClient] Sending device disconnected message")
-        self.active = False
-        self.__mqttc.publish(
-            topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
-            payload="offline",
-            qos=2,
-            retain=True)
+    # def device_deactivated(self):
+    #     self.log.info("[MqttClient] Sending device disconnected message")
+    #     self.active = False
+    #     self.__mqttc.publish(
+    #         topic=self.mqtt_topic+"/"+self.inverter_sn+"/availability",
+    #         payload="offline",
+    #         qos=2,
+    #         retain=True)
 
     def hass_sensors_config(self, sensor_name_prefix):
 
@@ -131,8 +131,8 @@ class MqttClient(object):
                 d[k]["name"] = self.inverter_sn + "_" + k
             else:
                 d[k]["name"] = k
-            if not k.startswith("e_"):
-                d[k]["availability_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/availability"
+            # if not k.startswith("e_"):
+            #     d[k]["availability_topic"] = self.mqtt_topic+"/"+self.inverter_sn+"/availability"
 
         return d
 
